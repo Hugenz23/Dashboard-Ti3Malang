@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WISA Portal Terpadu • District Malang 2026</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
@@ -57,9 +58,9 @@
       color: #fca5a5; padding: 10px 12px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 14px;
     }
     .btn-primary {
-      width: 100%; background: var(--primary); hover: background: var(--primary-hover);
-      color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 0.9rem;
-      font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px;
+      border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
     }
     .btn-primary:hover { background: var(--primary-hover); }
     .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
@@ -111,7 +112,6 @@
     .btn-sm:hover { background: #293548; color: #fff; }
     .btn-logout:hover { background: var(--danger-bg); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; }
 
-    /* Mobile Sidebar Toggle */
     .mobile-topbar {
       display: none; background: var(--sidebar-bg); border-bottom: 1px solid var(--card-border);
       padding: 12px 16px; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 35;
@@ -145,10 +145,10 @@
     }
     .loader-banner.active { display: flex; }
 
-    .module-view { display: none; flex-direction: column; gap: 20px; }
+    .module-view { display: none; flex-direction: column; gap: 16px; }
     .module-view.active { display: flex; }
 
-    /* Stats Grid & Cards */
+    /* KPI 63 Dark Styling */
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
     .stat-card {
       background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
@@ -164,7 +164,6 @@
       color: var(--text-muted);
     }
 
-    /* Filter Bar */
     .filter-bar {
       background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
       padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
@@ -183,16 +182,15 @@
       padding: 8px 12px; border-radius: 8px; outline: none; font-size: 0.85rem; cursor: pointer;
     }
 
-    /* Data Table */
     .table-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden; }
     .table-container { overflow-x: auto; max-height: 560px; }
-    table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.8rem; }
-    th, td {
+    #view-KPI_WISA table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.8rem; }
+    #view-KPI_WISA th, #view-KPI_WISA td {
       border-bottom: 1px solid var(--card-border); border-right: 1px solid rgba(51, 65, 85, 0.4);
       padding: 10px 12px; white-space: nowrap;
     }
-    th:last-child, td:last-child { border-right: none; }
-    thead tr th {
+    #view-KPI_WISA th:last-child, #view-KPI_WISA td:last-child { border-right: none; }
+    #view-KPI_WISA thead tr th {
       background: var(--sidebar-bg); color: var(--text-muted); font-weight: 600;
       text-transform: uppercase; font-size: 0.72rem; position: sticky; top: 0; z-index: 10;
     }
@@ -209,10 +207,6 @@
       background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3);
       padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.72rem; display: inline-block;
     }
-    .status-warning {
-      background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.35);
-      padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.72rem; display: inline-block;
-    }
     .status-na { color: var(--text-muted); font-weight: 600; }
     .btn-rca {
       background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);
@@ -220,6 +214,35 @@
       display: inline-flex; align-items: center; gap: 5px;
     }
     .btn-rca:hover { background: rgba(59, 130, 246, 0.25); }
+
+    /* Due Date Plan Styling (Sesuai Lampiran INDEX DUE DATE PLAN)[cite: 5] */
+    .day-cell {
+      width: 19px;
+      min-width: 19px;
+      max-width: 19px;
+      height: 24px;
+      padding: 0;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 10px;
+      line-height: 1;
+      border-right: 1px solid #e2e8f0;
+    }
+    .week-divider {
+      border-right: 2px solid #6366f1 !important;
+    }
+    .today-header {
+      background-color: #fef08a !important;
+      color: #854d0e !important;
+      font-weight: 800 !important;
+      border-bottom: 2px solid #eab308 !important;
+    }
+    .line-clamp-4-custom {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
 
     /* Modal RCA */
     .modal-backdrop {
@@ -243,7 +266,7 @@
       .sidebar { position: fixed; left: 0; top: 0; transform: translateX(-100%); }
       .sidebar.open { transform: translateX(0); }
       .sidebar-backdrop.open { display: block; }
-      .main-content { padding: 16px; }
+      .main-content { padding: 14px; }
     }
   </style>
 </head>
@@ -285,7 +308,7 @@
         <i class="fa-solid fa-chart-line" style="color:#60a5fa;"></i>
         <span>WISA Portal Terpadu</span>
       </div>
-      <button class="mobile-menu-btn" onclick="toggleSidebar(true)">
+      <button type="button" class="mobile-menu-btn" onclick="toggleSidebar(true)">
         <i class="fa-solid fa-bars"></i> Menu
       </button>
     </div>
@@ -300,19 +323,19 @@
       <div class="sidebar-section-label">Menu Modul Terpadu</div>
       <ul class="sidebar-menu">
         <li>
-          <button id="nav-KPI_WISA" class="nav-btn active" onclick="switchModule('KPI_WISA')">
+          <button type="button" id="nav-KPI_WISA" class="nav-btn active" onclick="switchModule('KPI_WISA')">
             <i class="fa-solid fa-chart-pie"></i>
             <span>KPI WISA 2026</span>
           </button>
         </li>
         <li>
-          <button id="nav-DEPLOYMENT" class="nav-btn" onclick="switchModule('DEPLOYMENT')">
+          <button type="button" id="nav-DEPLOYMENT" class="nav-btn" onclick="switchModule('DEPLOYMENT')">
             <i class="fa-solid fa-network-wired"></i>
             <span>Deployment Malang</span>
           </button>
         </li>
         <li>
-          <button id="nav-DUE_DATE" class="nav-btn" onclick="switchModule('DUE_DATE')">
+          <button type="button" id="nav-DUE_DATE" class="nav-btn" onclick="switchModule('DUE_DATE')">
             <i class="fa-solid fa-calendar-check"></i>
             <span>Due Date Pekerjaan</span>
           </button>
@@ -328,10 +351,10 @@
           <i class="fa-solid fa-user-circle fa-lg" style="color:#60a5fa;"></i>
         </div>
         <div class="footer-actions">
-          <button class="btn-sm" onclick="refreshCurrentModule()" title="Refresh Data">
+          <button type="button" class="btn-sm" onclick="refreshCurrentModule()" title="Refresh Data">
             <i id="refresh-icon" class="fa-solid fa-rotate-right"></i> Refresh
           </button>
-          <button class="btn-sm btn-logout" onclick="logout()" title="Keluar">
+          <button type="button" class="btn-sm btn-logout" onclick="logout()" title="Keluar">
             <i class="fa-solid fa-right-from-bracket"></i> Keluar
           </button>
         </div>
@@ -347,7 +370,7 @@
         <span>Mengambil data terbaru dari Google Sheets...</span>
       </div>
 
-      <!-- ==================== MODUL 1: KPI WISA 2026 (FORMAT KPI 63) ==================== -->
+      <!-- ==================== MODUL 1: KPI WISA 2026 ==================== -->
       <section id="view-KPI_WISA" class="module-view active">
         <div class="top-header">
           <div class="header-title">
@@ -522,85 +545,152 @@
 
         <div class="table-card">
           <div class="table-container">
-            <table id="dep-table">
+            <table id="dep-table" style="width:100%; border-collapse:collapse; font-size:0.8rem;">
               <thead id="dep-thead"></thead>
               <tbody id="dep-tbody">
-                <tr><td style="padding:25px; color:var(--text-muted);">Belum ada data deployment.</td></tr>
+                <tr><td style="padding:25px; color:var(--text-muted); text-align:center;">Belum ada data deployment.</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- ==================== MODUL 3: DUE DATE PEKERJAAN ==================== -->
-      <section id="view-DUE_DATE" class="module-view">
-        <div class="top-header">
-          <div class="header-title">
-            <h1>Due Date Pekerjaan</h1>
-            <p>Pemantauan Tenggat Waktu, Prioritas &amp; Status Penyelesaian Pekerjaan</p>
-          </div>
-          <div class="badge-pill"><i class="fa-regular fa-clock"></i> Deadline Tracker</div>
-        </div>
+      <!-- ==================== MODUL 3: DUE DATE PEKERJAAN (SESUAI LAMPIRAN) ==================== -->
+      <section id="view-DUE_DATE" class="module-view text-slate-800">
 
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Total Pekerjaan</div>
-            <div class="stat-main">
-              <div>
-                <div class="stat-number" id="due-total">0</div>
-                <div class="stat-sub">Item Terdaftar</div>
-              </div>
-              <div class="stat-icon-box"><i class="fa-solid fa-list-check fa-lg"></i></div>
+        <!-- Topbar Header Due Date -->
+        <div class="bg-indigo-900 text-white px-5 py-2.5 flex flex-wrap justify-between items-center gap-3 rounded-xl shadow shrink-0">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-calendar-week text-indigo-300 text-lg"></i>
+            <div>
+              <h1 class="font-bold text-sm tracking-wide leading-none text-white">DUE DATE PLAN PEKERJAAN — NOVEMBER 2026</h1>
+              <p class="text-[10px] text-indigo-200 mt-0.5">Monitoring Agenda &amp; Timeline Harian (W1 - W4)</p>
             </div>
           </div>
-          <div class="stat-card" style="border-left: 4px solid var(--danger);">
-            <div class="stat-label">Overdue / Lewat Tenggat</div>
-            <div class="stat-main">
-              <div>
-                <div class="stat-number" style="color: var(--danger);" id="due-overdue">0</div>
-                <div class="stat-sub">Segera Tindak Lanjuti</div>
-              </div>
-              <div class="stat-icon-box" style="color: var(--danger);"><i class="fa-solid fa-circle-exclamation fa-lg"></i></div>
+
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 text-xs text-indigo-200">
+              <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="headerTodayText" class="text-[11px] font-medium">Hari ini: Memuat...</span>
             </div>
-          </div>
-          <div class="stat-card" style="border-left: 4px solid var(--warning);">
-            <div class="stat-label">Mendekati Due Date</div>
-            <div class="stat-main">
-              <div>
-                <div class="stat-number" style="color: var(--warning);" id="due-upcoming">0</div>
-                <div class="stat-sub">Dalam 3 Hari Ke Depan</div>
-              </div>
-              <div class="stat-icon-box" style="color: var(--warning);"><i class="fa-solid fa-hourglass-half fa-lg"></i></div>
-            </div>
-          </div>
-          <div class="stat-card" style="border-left: 4px solid var(--success);">
-            <div class="stat-label">Selesai / Done</div>
-            <div class="stat-main">
-              <div>
-                <div class="stat-number" style="color: var(--success);" id="due-done">0</div>
-                <div class="stat-sub">Terselesaikan</div>
-              </div>
-              <div class="stat-icon-box" style="color: var(--success);"><i class="fa-solid fa-check-double fa-lg"></i></div>
-            </div>
+            <button type="button" onclick="openDueModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-1.5 px-3 rounded-lg shadow-sm transition flex items-center gap-1.5 text-xs cursor-pointer">
+              <i class="fa-solid fa-plus"></i> Tambah Agenda Baru
+            </button>
           </div>
         </div>
 
-        <div class="filter-bar">
-          <div class="search-input-group">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="due-search" placeholder="Cari nama pekerjaan, PIC, atau status..." onkeyup="renderDueDateModule()" />
+        <!-- Scoreboard & Filter -->
+        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm shrink-0 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-2">
+          <div class="grid grid-cols-3 gap-2 xl:w-[420px] shrink-0">
+            <div class="bg-slate-50 px-2 py-1.5 rounded-md border border-slate-200 flex flex-col items-center justify-center text-center">
+              <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wide leading-tight">Total Agenda</span>
+              <span id="due-stat-total" class="font-extrabold text-slate-800 text-base leading-tight mt-0.5">0</span>
+            </div>
+
+            <div class="bg-emerald-50 px-2 py-1.5 rounded-md border border-emerald-200 flex flex-col items-center justify-center text-center">
+              <span class="text-[10px] text-emerald-700 font-semibold uppercase tracking-wide leading-tight">Selesai</span>
+              <span id="due-stat-done" class="font-extrabold text-emerald-700 text-base leading-tight mt-0.5">0</span>
+            </div>
+
+            <div class="bg-amber-50 px-2 py-1.5 rounded-md border border-amber-200 flex flex-col items-center justify-center text-center">
+              <span class="text-[10px] text-amber-700 font-semibold uppercase tracking-wide leading-tight">Plan / Proses</span>
+              <span id="due-stat-pending" class="font-extrabold text-amber-700 text-base leading-tight mt-0.5">0</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:flex sm:flex-wrap xl:flex-nowrap items-center gap-1.5 flex-1 justify-end">
+            <div class="relative col-span-2 sm:flex-1 xl:max-w-xs">
+              <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-slate-400 text-xs"></i>
+              <input type="text" id="dueSearchInput" oninput="filterDueData()" placeholder="Cari Agenda / PIC..." class="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-200 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-slate-50 text-slate-800" />
+            </div>
+
+            <select id="dueTypeFilter" onchange="filterDueData()" class="w-full sm:w-auto text-xs border border-slate-200 rounded-md py-1.5 px-2 bg-slate-50 text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+              <option value="all">Semua Type</option>
+            </select>
+
+            <select id="dueStatusFilter" onchange="filterDueData()" class="w-full sm:w-auto text-xs border border-slate-200 rounded-md py-1.5 px-2 bg-slate-50 text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+              <option value="all">Semua Status</option>
+              <option value="done">Selesai (Done)</option>
+              <option value="pending">Belum Selesai (Plan)</option>
+              <option value="today">🔥 Due Date Hari Ini</option>
+            </select>
+
+            <button type="button" onclick="loadModuleData('DUE_DATE')" class="col-span-2 sm:col-span-1 py-1.5 px-3 border border-slate-200 rounded-md text-xs text-slate-600 hover:bg-slate-100 flex items-center justify-center gap-1.5 transition shrink-0 cursor-pointer" title="Refresh Data">
+              <i class="fa-solid fa-rotate-right text-[11px]"></i> Refresh
+            </button>
           </div>
         </div>
 
-        <div class="table-card">
-          <div class="table-container">
-            <table id="due-table">
-              <thead id="due-thead"></thead>
-              <tbody id="due-tbody">
-                <tr><td style="padding:25px; color:var(--text-muted);">Belum ada data due date pekerjaan.</td></tr>
-              </tbody>
-            </table>
+        <!-- Alert Due Date Hari Berjalan -->
+        <div id="todayAlertBanner" class="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white p-3 rounded-lg shadow-sm shrink-0 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 transition">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-lg shrink-0">
+              <i class="fa-solid fa-bell animate-bounce"></i>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-bold text-xs uppercase tracking-wider bg-black/20 px-2 py-0.5 rounded">Agenda Hari Ini</span>
+                <span id="alertDateLabel" class="text-xs font-semibold text-amber-100">...</span>
+                <span id="alertCountBadge" class="bg-white text-orange-600 font-bold text-[11px] px-2.5 py-0.5 rounded-full">0 Harus Dikerjakan</span>
+              </div>
+              <p id="alertSummaryText" class="text-xs text-white/95 mt-0.5">Memeriksa agenda yang harus dikerjakan hari ini...</p>
+            </div>
           </div>
+
+          <div class="flex items-center gap-2 shrink-0">
+            <button type="button" onclick="filterOnlyToday()" class="bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-1.5 rounded font-medium transition flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-filter"></i> Tampilkan Hanya Hari Ini
+            </button>
+            <button type="button" onclick="toggleTodayDetails()" id="toggleDetailsBtn" class="bg-white text-orange-600 hover:bg-orange-50 text-xs px-3 py-1.5 rounded font-semibold shadow transition flex items-center gap-1 cursor-pointer">
+              Lihat Detail <i class="fa-solid fa-chevron-down text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Detail Dropdown Agenda Hari Ini -->
+        <div id="todayDetailsList" class="bg-white border border-orange-200 rounded-lg p-3 shadow-sm hidden shrink-0 max-h-40 overflow-y-auto">
+          <p class="text-[11px] font-bold text-slate-700 mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-list-check text-orange-500"></i> Daftar Pekerjaan Hari Ini:
+          </p>
+          <div id="todayItemsContainer" class="space-y-1.5 text-xs"></div>
+        </div>
+
+        <!-- Tabel Utama Timeline W1 - W4 -->
+        <div class="bg-white rounded-lg border border-slate-200 shadow-sm flex-1 overflow-auto max-h-[560px]">
+          <table class="w-full border-collapse text-[11px] min-w-[1250px]">
+            <thead class="sticky top-0 z-20 bg-slate-100">
+              <tr class="text-slate-700 font-bold text-[10px] uppercase border-b border-slate-200">
+                <th rowspan="2" class="p-2 w-8 text-center border-r border-slate-200 bg-slate-100">NO</th>
+                <th rowspan="2" class="p-2 w-24 min-w-[90px] max-w-[110px] text-left border-r border-slate-200 bg-slate-100">AGENDA</th>
+                <th rowspan="2" class="p-2 w-28 text-left border-r border-slate-200 bg-slate-100">TYPE</th>
+                <th rowspan="2" class="p-2 w-16 text-center border-r border-slate-200 bg-slate-100">STATUS</th>
+                <th rowspan="2" class="p-2 w-28 text-left border-r border-slate-200 bg-slate-100">PIC</th>
+
+                <th colspan="7" class="py-1 text-center bg-indigo-50 text-indigo-900 border-r-2 border-indigo-500 font-bold">W1 (Tgl 1 - 7)</th>
+                <th colspan="7" class="py-1 text-center bg-sky-50 text-sky-900 border-r-2 border-indigo-500 font-bold">W2 (Tgl 8 - 14)</th>
+                <th colspan="7" class="py-1 text-center bg-indigo-50 text-indigo-900 border-r-2 border-indigo-500 font-bold">W3 (Tgl 15 - 21)</th>
+                <th colspan="9" class="py-1 text-center bg-sky-50 text-sky-900 border-r-2 border-indigo-500 font-bold">W4 (Tgl 22 - 30)</th>
+
+                <th rowspan="2" class="p-2 w-64 text-left border-slate-200 bg-slate-100">KETERANGAN &amp; LOG</th>
+              </tr>
+
+              <tr id="daysHeaderRow" class="text-slate-600 font-semibold text-[9px] border-b border-slate-200 text-center bg-slate-50">
+                <th class="day-cell" id="th-day-1">1</th><th class="day-cell" id="th-day-2">2</th><th class="day-cell" id="th-day-3">3</th><th class="day-cell" id="th-day-4">4</th><th class="day-cell" id="th-day-5">5</th><th class="day-cell" id="th-day-6">6</th><th class="day-cell week-divider" id="th-day-7">7</th>
+                <th class="day-cell" id="th-day-8">8</th><th class="day-cell" id="th-day-9">9</th><th class="day-cell" id="th-day-10">10</th><th class="day-cell" id="th-day-11">11</th><th class="day-cell" id="th-day-12">12</th><th class="day-cell" id="th-day-13">13</th><th class="day-cell week-divider" id="th-day-14">14</th>
+                <th class="day-cell" id="th-day-15">15</th><th class="day-cell" id="th-day-16">16</th><th class="day-cell" id="th-day-17">17</th><th class="day-cell" id="th-day-18">18</th><th class="day-cell" id="th-day-19">19</th><th class="day-cell" id="th-day-20">20</th><th class="day-cell week-divider" id="th-day-21">21</th>
+                <th class="day-cell" id="th-day-22">22</th><th class="day-cell" id="th-day-23">23</th><th class="day-cell" id="th-day-24">24</th><th class="day-cell" id="th-day-25">25</th><th class="day-cell" id="th-day-26">26</th><th class="day-cell" id="th-day-27">27</th><th class="day-cell" id="th-day-28">28</th><th class="day-cell" id="th-day-29">29</th><th class="day-cell week-divider" id="th-day-30">30</th>
+              </tr>
+            </thead>
+
+            <tbody id="dueTableBody" class="divide-y divide-slate-100">
+              <tr>
+                <td colspan="36" class="p-8 text-center text-slate-400">
+                  <i class="fa-solid fa-circle-notch fa-spin text-xl text-indigo-500"></i>
+                  <p class="mt-2 text-xs">Menghubungkan ke Google Sheets...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -612,18 +702,68 @@
     <div class="modal-box">
       <div class="modal-header">
         <h3><i class="fa-solid fa-file-lines" style="color:#60a5fa; margin-right:6px;"></i> Detail RCA &amp; Remedi</h3>
-        <button class="modal-close" onclick="closeRcaModal()">&times;</button>
+        <button type="button" class="modal-close" onclick="closeRcaModal()">&times;</button>
       </div>
       <div id="rca-modal-content" class="modal-body"></div>
     </div>
   </div>
 
+  <!-- Modal Tambah Agenda Baru (Due Date) -->
+  <div id="agendaModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-[130] flex items-center justify-center hidden px-4 text-slate-800">
+    <div class="bg-white w-full max-w-md rounded-xl shadow-xl overflow-hidden text-xs">
+      <div class="bg-indigo-900 text-white px-5 py-3 flex justify-between items-center">
+        <h3 class="font-bold text-xs flex items-center gap-2">
+          <i class="fa-solid fa-calendar-plus"></i> Tambah Agenda Baru
+        </h3>
+        <button type="button" onclick="closeDueModal()" class="text-white hover:text-indigo-200 text-base font-bold cursor-pointer">&times;</button>
+      </div>
+      <form id="agendaForm" onsubmit="submitDueForm(event)" class="p-5 space-y-3.5">
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700">Nama Agenda / Case *</label>
+          <textarea id="formAgenda" required rows="2" placeholder="Contoh: VALIDASI DISTRIBUSI AREA X 50 CORE" class="w-full border border-slate-200 rounded-lg p-2 focus:ring-1 focus:ring-indigo-500 outline-none"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700">TYPE Agenda *</label>
+            <input type="text" id="formType" required list="typeOptions" placeholder="Pilih / Ketik Type" class="w-full border border-slate-200 rounded-lg p-2 focus:ring-1 focus:ring-indigo-500 outline-none" />
+            <datalist id="typeOptions"></datalist>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700">Target Tanggal (1-30)</label>
+            <input type="number" id="formTargetDay" min="1" max="30" placeholder="Contoh: 23" class="w-full border border-slate-200 rounded-lg p-2 focus:ring-1 focus:ring-indigo-500 outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700">PIC</label>
+          <input type="text" id="formPic" placeholder="Contoh: MTC-ZAKKI" class="w-full border border-slate-200 rounded-lg p-2 focus:ring-1 focus:ring-indigo-500 outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700">Keterangan Tambahan</label>
+          <input type="text" id="formKet" placeholder="Contoh: Koordinasi dengan HSA" class="w-full border border-slate-200 rounded-lg p-2 focus:ring-1 focus:ring-indigo-500 outline-none" />
+        </div>
+
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeDueModal()" class="px-3 py-1.5 border border-slate-200 rounded-md text-slate-600 hover:bg-slate-50 cursor-pointer">Batal</button>
+          <button type="submit" id="submitDueBtn" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md font-medium shadow-sm transition cursor-pointer">
+            Simpan Agenda
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     // GANTI URL INI DENGAN WEB APP URL GOOGLE APPS SCRIPT ANDA
-    const API_URL = "https://script.google.com/macros/s/AKfycbwzAlU4Er96L4rtzxM-P5o9wG55mPZj7KpRa5zVHqyrXc1v8v3aDvUJ7dK5Z_r8St2MBQ/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbwcDbmnd95d8ych4XJWFw15mLcrur6RWtThpDR4p0ACvIg9HnwYYC0zILryt2x-xjnwUQ/exec";
 
     let currentModule = "KPI_WISA";
     let globalKpiData = [];
+    let allDueData = [];
+    let availableDueTypes = [];
+    let currentDueDay = new Date().getDate();
     const rawModuleCache = {};
 
     window.addEventListener("DOMContentLoaded", () => {
@@ -714,6 +854,16 @@
       const loader = document.getElementById("global-loader");
       loader.classList.add("active");
 
+      if (modName === "DUE_DATE") {
+        document.getElementById("dueTableBody").innerHTML = `
+          <tr>
+            <td colspan="36" class="p-8 text-center text-slate-400">
+              <i class="fa-solid fa-circle-notch fa-spin text-xl text-indigo-500"></i>
+              <p class="mt-2 text-xs">Memuat data terbaru dari Google Sheets...</p>
+            </td>
+          </tr>`;
+      }
+
       try {
         const res = await fetch(API_URL, {
           method: "POST",
@@ -726,6 +876,8 @@
         console.error(err);
         if (modName === "KPI_WISA") {
           document.getElementById("table-body").innerHTML = `<tr><td colspan="11" style="color:var(--danger); text-align:center; padding: 20px;">Gagal memuat data. Pastikan Apps Script sudah di-deploy dengan versi terbaru ("New version").</td></tr>`;
+        } else if (modName === "DUE_DATE") {
+          document.getElementById("dueTableBody").innerHTML = `<tr><td colspan="36" class="p-6 text-center text-rose-600 font-medium">Gagal memuat data Due Date. Pastikan ID &amp; tab sheet sudah dikonfigurasi di Apps Script.</td></tr>`;
         }
       } finally {
         loader.classList.remove("active");
@@ -751,16 +903,16 @@
       if (payload && Array.isArray(payload.rows)) {
         return payload.rows.map((r, idx) => ({
           no: r[0] || (idx + 1),
-          kpi: r[4] || "-",
-          pic: r[18] || "ENTERPRISE",
-          targetOct: r[10] || "-",
-          reaOct: r[11] || "-",
-          achOct: r[12] || "-",
-          compOct: r[13] || "-",
-          targetNov: r[14] || "-",
-          reaNov: r[15] || "-",
-          achNov: r[16] || "-",
-          compNov: r[17] || "-",
+          kpi: r[1] || "-",
+          pic: r[2] || "ENTERPRISE",
+          targetOct: r[3] || "-",
+          reaOct: r[4] || "-",
+          achOct: r[5] || "-",
+          compOct: r[6] || "-",
+          targetNov: r[7] || "-",
+          reaNov: r[8] || "-",
+          achNov: r[9] || "-",
+          compNov: r[10] || "-",
           rca: r[11] || ""
         }));
       }
@@ -833,7 +985,7 @@
 
         const isNotComply = String(cNov).toUpperCase().includes("NOT");
         const rcaButton = isNotComply
-          ? `<button class="btn-rca" onclick='openRcaModal(${idx})'><i class="fa-solid fa-file-lines"></i> Detail RCA</button>`
+          ? `<button type="button" class="btn-rca" onclick='openRcaModal(${idx})'><i class="fa-solid fa-file-lines"></i> Detail RCA</button>`
           : `<span style="color: var(--text-muted);">-</span>`;
 
         return `
@@ -907,9 +1059,15 @@
       document.getElementById("rca-modal").classList.remove("active");
     }
 
-    // ==================== MODUL 2 & 3 (DINAMIS DARI SHEET) ====================
+    // ==================== MODUL 2: DEPLOYMENT DISTRICT MALANG ====================
     function renderDeploymentModule(payload = rawModuleCache["DEPLOYMENT"]) {
-      if (!payload || !payload.rows) return;
+      const thead = document.getElementById("dep-thead");
+      const tbody = document.getElementById("dep-tbody");
+      if (!payload || !Array.isArray(payload.rows)) {
+        tbody.innerHTML = `<tr><td style="padding:25px; color:var(--text-muted); text-align:center;">${(payload && payload.message) || "Belum ada data deployment."}</td></tr>`;
+        return;
+      }
+
       const q = (document.getElementById("dep-search")?.value || "").toLowerCase();
       let goLive = 0, progress = 0, outSla = 0;
 
@@ -925,42 +1083,240 @@
       document.getElementById("dep-progress").innerText = progress;
       document.getElementById("dep-outsla").innerText = outSla;
 
-      const filtered = payload.rows.filter(r => r.join(" ").toLowerCase().includes(q));
-      renderGenericTable("dep-thead", "dep-tbody", payload.headers || [], filtered);
-    }
-
-    function renderDueDateModule(payload = rawModuleCache["DUE_DATE"]) {
-      if (!payload || !payload.rows) return;
-      const q = (document.getElementById("due-search")?.value || "").toLowerCase();
-      let overdue = 0, upcoming = 0, done = 0;
-
-      payload.rows.forEach(row => {
-        const joined = row.join(" ").toUpperCase();
-        if (joined.includes("DONE") || joined.includes("SELESAI") || joined.includes("CLOSE")) done++;
-        else if (joined.includes("OVERDUE") || joined.includes("LEWAT") || joined.includes("TELAT")) overdue++;
-        else upcoming++;
-      });
-
-      document.getElementById("due-total").innerText = payload.rows.length;
-      document.getElementById("due-overdue").innerText = overdue;
-      document.getElementById("due-upcoming").innerText = upcoming;
-      document.getElementById("due-done").innerText = done;
+      const headers = payload.headers || [];
+      thead.innerHTML = `<tr>${headers.map(h => `<th style="background:var(--sidebar-bg); color:var(--text-muted); padding:10px 12px; text-align:left; border-bottom:1px solid var(--card-border);">${h || "-"}</th>`).join("")}</tr>`;
 
       const filtered = payload.rows.filter(r => r.join(" ").toLowerCase().includes(q));
-      renderGenericTable("due-thead", "due-tbody", payload.headers || [], filtered);
-    }
-
-    function renderGenericTable(theadId, tbodyId, headers, rows) {
-      const thead = document.getElementById(theadId);
-      const tbody = document.getElementById(tbodyId);
-      thead.innerHTML = `<tr>${headers.map(h => `<th>${h || "-"}</th>`).join("")}</tr>`;
-      if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="${Math.max(headers.length, 1)}" style="padding:24px; color:var(--text-muted);">Tidak ada data yang cocok.</td></tr>`;
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="${Math.max(headers.length, 1)}" style="padding:24px; color:var(--text-muted); text-align:center;">Tidak ada data yang cocok.</td></tr>`;
         return;
       }
-      tbody.innerHTML = rows.map(r =>
-        `<tr>${r.map(cell => `<td class="text-left">${cell || "-"}</td>`).join("")}</tr>`
+      tbody.innerHTML = filtered.map(r =>
+        `<tr>${r.map(cell => `<td style="padding:9px 12px; border-bottom:1px solid rgba(51,65,85,0.4); color:#e2e8f0; white-space:nowrap;">${cell || "-"}</td>`).join("")}</tr>`
       ).join("");
+    }
+
+    // ==================== MODUL 3: DUE DATE PEKERJAAN ====================
+    function renderDueDateModule(response = rawModuleCache["DUE_DATE"]) {
+      if (!response) return;
+      if (response.status === "error") {
+        document.getElementById("dueTableBody").innerHTML = `<tr><td colspan="36" class="p-6 text-center text-rose-600 font-medium">${response.message}</td></tr>`;
+        return;
+      }
+
+      allDueData = response.items || [];
+      availableDueTypes = response.types || [];
+
+      if (response.todayInfo) {
+        currentDueDay = response.todayInfo.day || currentDueDay;
+        const formattedDate = response.todayInfo.formattedDate || `${currentDueDay} November 2026`;
+        document.getElementById("headerTodayText").innerText = `Hari ini: ${formattedDate}`;
+        document.getElementById("alertDateLabel").innerText = formattedDate;
+
+        document.querySelectorAll("#daysHeaderRow th").forEach(th => th.classList.remove("today-header"));
+        const todayTh = document.getElementById(`th-day-${currentDueDay}`);
+        if (todayTh) {
+          todayTh.classList.add("today-header");
+          todayTh.setAttribute("title", "HARI INI");
+        }
+      }
+
+      const summary = response.summary || { total: allDueData.length, done: 0, pending: 0 };
+      document.getElementById("due-stat-total").innerText = summary.total;
+      document.getElementById("due-stat-done").innerText = summary.done;
+      document.getElementById("due-stat-pending").innerText = summary.pending;
+
+      setupDueTodayAlert();
+
+      const typeFilter = document.getElementById("dueTypeFilter");
+      const prevType = typeFilter.value;
+      typeFilter.innerHTML = '<option value="all">Semua Type</option>' +
+        availableDueTypes.map(t => `<option value="${t}">${t}</option>`).join("");
+      if ([...typeFilter.options].some(o => o.value === prevType)) typeFilter.value = prevType;
+
+      const typeOptions = document.getElementById("typeOptions");
+      typeOptions.innerHTML = availableDueTypes.map(t => `<option value="${t}"></option>`).join("");
+
+      filterDueData();
+    }
+
+    function setupDueTodayAlert() {
+      const todayDueItems = allDueData.filter(item => item.isDueToday);
+      const pendingTodayItems = todayDueItems.filter(item => !item.isDone);
+
+      const banner = document.getElementById("todayAlertBanner");
+      const countBadge = document.getElementById("alertCountBadge");
+      const summaryText = document.getElementById("alertSummaryText");
+      const container = document.getElementById("todayItemsContainer");
+
+      const totalHarusDikerjakan = pendingTodayItems.length;
+      countBadge.innerText = `${totalHarusDikerjakan} Harus Dikerjakan`;
+
+      if (todayDueItems.length === 0) {
+        summaryText.innerHTML = `Total agenda harus dikerjakan hari ini (Tgl ${currentDueDay}): <strong>0 pekerjaan</strong>.`;
+        container.innerHTML = `<p class="text-slate-400 italic">Tidak ada agenda jatuh tempo hari ini.</p>`;
+        banner.className = "bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-3 rounded-lg shadow-sm shrink-0 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 transition";
+      } else {
+        summaryText.innerHTML = `Total yang harus dikerjakan hari ini: <strong>${totalHarusDikerjakan} agenda</strong> (dari ${todayDueItems.length} total agenda terjadwal hari ini).`;
+        container.innerHTML = todayDueItems.map(item => `
+          <div class="flex items-center justify-between p-2 rounded border ${item.isDone ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'}">
+            <div class="flex items-center gap-2 overflow-hidden">
+              <span class="font-semibold text-slate-800 truncate">${item.agenda}</span>
+              <span class="text-[10px] px-1.5 py-0.5 bg-white rounded border border-slate-200 text-slate-600 shrink-0">${item.type}</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 ml-2">
+              <span class="text-[10px] font-medium text-slate-600"><i class="fa-solid fa-user text-[9px] mr-1"></i>${item.pic}</span>
+              ${item.isDone
+                ? '<span class="text-[9px] bg-emerald-600 text-white px-2 py-0.5 rounded font-bold">SELESAI</span>'
+                : '<span class="text-[9px] bg-amber-500 text-white px-2 py-0.5 rounded font-bold">PERLU DIKERJAKAN</span>'}
+            </div>
+          </div>
+        `).join("");
+
+        banner.className = totalHarusDikerjakan === 0
+          ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-3 rounded-lg shadow-sm shrink-0 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 transition"
+          : "bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white p-3 rounded-lg shadow-sm shrink-0 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 transition";
+      }
+    }
+
+    function toggleTodayDetails() {
+      const details = document.getElementById("todayDetailsList");
+      const btn = document.getElementById("toggleDetailsBtn");
+      if (details.classList.contains("hidden")) {
+        details.classList.remove("hidden");
+        btn.innerHTML = 'Tutup Detail <i class="fa-solid fa-chevron-up text-[10px]"></i>';
+      } else {
+        details.classList.add("hidden");
+        btn.innerHTML = 'Lihat Detail <i class="fa-solid fa-chevron-down text-[10px]"></i>';
+      }
+    }
+
+    function filterOnlyToday() {
+      document.getElementById("dueStatusFilter").value = "today";
+      filterDueData();
+    }
+
+    function toggleDueExpandRow(index) {
+      const el = document.getElementById(`agenda-box-${index}`);
+      if (el) el.classList.toggle("line-clamp-4-custom");
+    }
+
+    function getDueTypeBadge(type) {
+      if (!type) return '<span class="text-slate-400">-</span>';
+      const upper = type.toUpperCase();
+      let colorClass = "bg-slate-100 text-slate-700 border-slate-200";
+      if (upper.includes("VALDAT")) colorClass = "bg-blue-50 text-blue-700 border-blue-200 font-semibold";
+      else if (upper.includes("PERMANENISASI")) colorClass = "bg-purple-50 text-purple-700 border-purple-200 font-semibold";
+      else if (upper.includes("OLAH DATA")) colorClass = "bg-emerald-50 text-emerald-700 border-emerald-200 font-semibold";
+      else if (upper.includes("PERIJINAN")) colorClass = "bg-amber-50 text-amber-700 border-amber-200 font-semibold";
+      return `<span class="inline-block px-1.5 py-0.5 rounded border text-[9px] ${colorClass}">${type}</span>`;
+    }
+
+    function filterDueData() {
+      const query = (document.getElementById("dueSearchInput")?.value || "").toLowerCase();
+      const selectedType = document.getElementById("dueTypeFilter")?.value || "all";
+      const selectedStatus = document.getElementById("dueStatusFilter")?.value || "all";
+
+      const filtered = allDueData.filter(item => {
+        const matchesQuery =
+          (item.agenda || "").toLowerCase().includes(query) ||
+          (item.pic || "").toLowerCase().includes(query) ||
+          (item.ket || "").toLowerCase().includes(query) ||
+          (item.type || "").toLowerCase().includes(query);
+        const matchesType = (selectedType === "all") || (item.type === selectedType);
+        let matchesStatus = true;
+        if (selectedStatus === "done") matchesStatus = item.isDone;
+        if (selectedStatus === "pending") matchesStatus = !item.isDone;
+        if (selectedStatus === "today") matchesStatus = item.isDueToday;
+        return matchesQuery && matchesType && matchesStatus;
+      });
+
+      const tbody = document.getElementById("dueTableBody");
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="36" class="p-6 text-center text-slate-400">Tidak ada agenda yang cocok dengan kriteria filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((item, idx) => {
+        const dayCellsHtml = (item.days || []).map(d => {
+          const isWeekEnd = (d.day === 7 || d.day === 14 || d.day === 21 || d.day === 30);
+          const dividerClass = isWeekEnd ? "week-divider" : "";
+          let styleBg = "";
+          let content = d.val || "";
+          if (d.bg) styleBg = `background-color: ${d.bg};`;
+          else if (d.val !== "") styleBg = "background-color: #fef08a;";
+          if (content.includes("✅")) content = '<i class="fa-solid fa-check text-emerald-700 text-[10px]"></i>';
+          const todayBorder = d.isToday ? "border-l-2 border-r-2 border-amber-500 font-bold" : "";
+          return `<td class="day-cell ${dividerClass} ${todayBorder}" style="${styleBg}" title="Tgl ${d.day}: ${d.val || (d.bg ? 'Highlight' : 'Kosong')}">${content}</td>`;
+        }).join("");
+
+        const rowHighlight = item.isDueToday && !item.isDone ? "bg-amber-50/40 font-medium" : "";
+
+        return `
+          <tr onclick="toggleDueExpandRow(${idx})" class="hover:bg-indigo-50/20 cursor-pointer transition border-b border-slate-100 ${rowHighlight}">
+            <td class="p-2 text-center font-bold text-slate-400 border-r border-slate-100 align-top">${item.no}</td>
+            <td class="p-2 border-r border-slate-100 align-top break-words w-24 min-w-[90px] max-w-[110px]">
+              <div id="agenda-box-${idx}" class="line-clamp-4-custom font-medium text-slate-800 leading-snug break-words text-[10px]" title="Klik untuk expand teks">${item.agenda}</div>
+            </td>
+            <td class="p-2 border-r border-slate-100 align-top">${getDueTypeBadge(item.type)}</td>
+            <td class="p-2 text-center align-top border-r border-slate-100">
+              ${item.isDone
+                ? '<span class="inline-block bg-emerald-100 text-emerald-700 text-[9px] px-1.5 py-0.5 rounded font-bold">DONE</span>'
+                : '<span class="inline-block bg-amber-100 text-amber-700 text-[9px] px-1.5 py-0.5 rounded font-bold">PLAN</span>'}
+            </td>
+            <td class="p-2 font-medium text-slate-700 border-r border-slate-100 align-top break-words">${item.pic}</td>
+            ${dayCellsHtml}
+            <td class="p-2 text-slate-600 border-l border-slate-100 align-top break-words text-[10px]">
+              ${item.ket ? `<div class="font-medium text-slate-800">${item.ket}</div>` : "-"}
+              ${item.log ? `<div class="text-[9px] text-slate-400 mt-0.5 italic whitespace-pre-line">${item.log}</div>` : ""}
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function openDueModal() {
+      document.getElementById("agendaModal").classList.remove("hidden");
+    }
+
+    function closeDueModal() {
+      document.getElementById("agendaModal").classList.add("hidden");
+      document.getElementById("agendaForm").reset();
+    }
+
+    async function submitDueForm(event) {
+      event.preventDefault();
+      const submitBtn = document.getElementById("submitDueBtn");
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Menyimpan...";
+
+      const formData = {
+        agenda: document.getElementById("formAgenda").value,
+        type: document.getElementById("formType").value,
+        targetDay: document.getElementById("formTargetDay").value,
+        pic: document.getElementById("formPic").value,
+        ket: document.getElementById("formKet").value
+      };
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "addAgenda", formData })
+        });
+        const result = await res.json();
+        if (result.status === "success" || result.success) {
+          closeDueModal();
+          delete rawModuleCache["DUE_DATE"];
+          await loadModuleData("DUE_DATE");
+        } else {
+          alert(result.message || "Gagal menyimpan agenda.");
+        }
+      } catch (err) {
+        alert("Terjadi kesalahan saat menyimpan: " + err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Simpan Agenda";
+      }
     }
   </script>
 </body>
