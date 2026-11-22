@@ -3,35 +3,272 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal Monitoring Terpadu 2026</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased">
+  <title>WISA Portal Terpadu • District Malang 2026</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg-dark: #0b1120;
+      --sidebar-bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.15);
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.15);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.15);
+    }
 
-  <!-- ==================== 1. LOGIN OVERLAY ==================== -->
-  <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4">
-    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-8">
-      <div class="text-center mb-6">
-        <div class="w-14 h-14 bg-red-600 text-white rounded-xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-md">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <h1 class="text-xl font-bold text-slate-800">Command Center 2026</h1>
-        <p class="text-sm text-slate-500">Silakan login untuk mengakses dashboard terpadu</p>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+
+    /* ==================== LOGIN OVERLAY ==================== */
+    #login-screen {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(2, 6, 23, 0.92); backdrop-filter: blur(6px); padding: 20px;
+    }
+    .login-card {
+      width: 100%; max-width: 420px;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 14px; padding: 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
+    }
+    .login-brand { text-align: center; margin-bottom: 24px; }
+    .login-icon {
+      width: 54px; height: 54px; margin: 0 auto 12px; border-radius: 12px;
+      background: rgba(59, 130, 246, 0.18); border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #60a5fa; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+    }
+    .login-brand h1 { font-size: 1.25rem; font-weight: 700; color: #fff; }
+    .login-brand p { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.4px; }
+    .form-group input {
+      width: 100%; background: var(--sidebar-bg); border: 1px solid var(--card-border);
+      color: #fff; padding: 11px 14px; border-radius: 8px; outline: none; font-size: 0.9rem;
+    }
+    .form-group input:focus { border-color: var(--primary); }
+    .login-error {
+      display: none; background: var(--danger-bg); border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5; padding: 10px 12px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 14px;
+    }
+    .btn-primary {
+      width: 100%; background: var(--primary); hover: background: var(--primary-hover);
+      color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 0.9rem;
+      font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    /* ==================== APP SHELL & SIDEBAR ==================== */
+    #app-shell { display: none; min-height: 100vh; width: 100%; }
+    #app-shell.active { display: flex; }
+
+    .sidebar {
+      width: 265px; min-width: 265px; background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--card-border); display: flex; flex-direction: column;
+      position: sticky; top: 0; height: 100vh; z-index: 40; transition: transform 0.25s ease;
+    }
+    .sidebar-header {
+      padding: 22px 20px; border-bottom: 1px solid var(--card-border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .sidebar-header h2 { font-size: 1.08rem; color: #fff; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    .sidebar-header h2 i { color: #60a5fa; }
+    .sidebar-section-label {
+      padding: 14px 20px 6px; font-size: 0.68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted);
+    }
+    .sidebar-menu { list-style: none; padding: 4px 12px; flex: 1; overflow-y: auto; }
+    .sidebar-menu li { margin-bottom: 6px; }
+    .nav-btn {
+      width: 100%; padding: 11px 14px; background: transparent; color: var(--text-muted);
+      border: 1px solid transparent; text-align: left; border-radius: 8px; font-size: 0.86rem;
+      display: flex; align-items: center; gap: 11px; font-weight: 600; cursor: pointer; transition: 0.15s ease;
+    }
+    .nav-btn:hover { background: rgba(255, 255, 255, 0.04); color: #fff; }
+    .nav-btn.active {
+      background: var(--primary); color: #fff; border-color: rgba(96, 165, 250, 0.4);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+    }
+
+    .sidebar-footer {
+      padding: 16px; border-top: 1px solid var(--card-border); background: rgba(11, 17, 32, 0.55);
+    }
+    .user-box { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+    .user-name { font-size: 0.85rem; font-weight: 700; color: #fff; }
+    .user-role { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; }
+    .footer-actions { display: flex; gap: 8px; }
+    .btn-sm {
+      flex: 1; padding: 8px 10px; border-radius: 7px; font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; border: 1px solid var(--card-border); background: var(--card-bg); color: #e2e8f0;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-sm:hover { background: #293548; color: #fff; }
+    .btn-logout:hover { background: var(--danger-bg); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; }
+
+    /* Mobile Sidebar Toggle */
+    .mobile-topbar {
+      display: none; background: var(--sidebar-bg); border-bottom: 1px solid var(--card-border);
+      padding: 12px 16px; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 35;
+    }
+    .mobile-menu-btn {
+      background: var(--card-bg); border: 1px solid var(--card-border); color: #fff;
+      padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9rem;
+    }
+    .sidebar-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 38;
+    }
+
+    /* ==================== MAIN CONTENT ==================== */
+    .main-content { flex: 1; display: flex; flex-direction: column; padding: 24px; gap: 20px; min-width: 0; }
+
+    .top-header {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+      background: var(--card-bg); padding: 18px 24px; border-radius: 12px; border: 1px solid var(--card-border);
+    }
+    .header-title h1 { font-size: 1.22rem; font-weight: 700; color: #fff; }
+    .header-title p { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
+    .badge-pill {
+      background: rgba(59, 130, 246, 0.15); color: #60a5fa; padding: 6px 14px;
+      border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .loader-banner {
+      display: none; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #93c5fd; padding: 12px 16px; border-radius: 10px; font-size: 0.84rem;
+      align-items: center; gap: 10px;
+    }
+    .loader-banner.active { display: flex; }
+
+    .module-view { display: none; flex-direction: column; gap: 20px; }
+    .module-view.active { display: flex; }
+
+    /* Stats Grid & Cards */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+    .stat-card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
+      padding: 20px; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .stat-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px; }
+    .stat-main { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; }
+    .stat-number { font-size: 2rem; font-weight: 800; color: #fff; }
+    .stat-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+    .stat-icon-box {
+      width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center;
+      justify-content: center; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
+      padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 15px;
+    }
+    .search-input-group { position: relative; flex: 1; min-width: 240px; }
+    .search-input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; }
+    .search-input-group input {
+      width: 100%; background: var(--sidebar-bg); border: 1px solid var(--card-border);
+      color: #fff; padding: 9px 14px 9px 40px; border-radius: 8px; outline: none; font-size: 0.85rem;
+    }
+    .filter-dropdowns { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+    .filter-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); }
+    .filter-item select {
+      background: var(--sidebar-bg); border: 1px solid var(--card-border); color: #fff;
+      padding: 8px 12px; border-radius: 8px; outline: none; font-size: 0.85rem; cursor: pointer;
+    }
+
+    /* Data Table */
+    .table-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden; }
+    .table-container { overflow-x: auto; max-height: 560px; }
+    table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.8rem; }
+    th, td {
+      border-bottom: 1px solid var(--card-border); border-right: 1px solid rgba(51, 65, 85, 0.4);
+      padding: 10px 12px; white-space: nowrap;
+    }
+    th:last-child, td:last-child { border-right: none; }
+    thead tr th {
+      background: var(--sidebar-bg); color: var(--text-muted); font-weight: 600;
+      text-transform: uppercase; font-size: 0.72rem; position: sticky; top: 0; z-index: 10;
+    }
+    .text-left { text-align: left; }
+    .pic-badge {
+      background: var(--sidebar-bg); color: #cbd5e1; border: 1px solid var(--card-border);
+      padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-block;
+    }
+    .status-comply {
+      background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.72rem; display: inline-block;
+    }
+    .status-not-comply {
+      background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.72rem; display: inline-block;
+    }
+    .status-warning {
+      background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.72rem; display: inline-block;
+    }
+    .status-na { color: var(--text-muted); font-weight: 600; }
+    .btn-rca {
+      background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .btn-rca:hover { background: rgba(59, 130, 246, 0.25); }
+
+    /* Modal RCA */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; z-index: 120;
+      background: rgba(2, 6, 23, 0.8); align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-backdrop.active { display: flex; }
+    .modal-box {
+      width: 100%; max-width: 540px; background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 12px; padding: 24px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .modal-header h3 { font-size: 1.05rem; color: #fff; }
+    .modal-close { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
+    .modal-body { font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; }
+    .modal-meta { background: var(--sidebar-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 12px; margin: 12px 0; font-size: 0.8rem; }
+
+    @media (max-width: 820px) {
+      #app-shell.active { flex-direction: column; }
+      .mobile-topbar { display: flex; }
+      .sidebar { position: fixed; left: 0; top: 0; transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-backdrop.open { display: block; }
+      .main-content { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== 1. LOGIN SCREEN ==================== -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="login-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h1>WISA Portal Terpadu</h1>
+        <p>Login untuk akses KPI WISA 2026, Deployment Malang &amp; Due Date</p>
       </div>
 
-      <form id="login-form" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Username</label>
-          <input type="text" id="username" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none" placeholder="Masukkan username" />
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" required placeholder="Masukkan username" autocomplete="username" />
         </div>
-        <div>
-          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Password</label>
-          <input type="password" id="password" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none" placeholder="••••••••" />
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required placeholder="••••••••" autocomplete="current-password" />
         </div>
-        <div id="login-error" class="hidden text-xs text-red-600 bg-red-50 p-2.5 rounded-lg border border-red-200"></div>
-        <button type="submit" id="btn-login" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg transition shadow-md flex items-center justify-center gap-2">
+        <div id="login-error" class="login-error"></div>
+        <button type="submit" id="btn-login" class="btn-primary">
           <span>Masuk ke Portal</span>
           <i class="fa-solid fa-arrow-right"></i>
         </button>
@@ -40,105 +277,355 @@
   </div>
 
   <!-- ==================== 2. MAIN APP SHELL ==================== -->
-  <div id="app-shell" class="hidden min-h-screen flex flex-col">
-    
-    <!-- Top Navbar -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 bg-red-600 text-white rounded-lg flex items-center justify-center font-bold">
-            <i class="fa-solid fa-layer-group"></i>
-          </div>
+  <div id="app-shell">
+
+    <!-- Mobile Topbar -->
+    <div class="mobile-topbar">
+      <div style="display:flex; align-items:center; gap:10px; font-weight:700; color:#fff;">
+        <i class="fa-solid fa-chart-line" style="color:#60a5fa;"></i>
+        <span>WISA Portal Terpadu</span>
+      </div>
+      <button class="mobile-menu-btn" onclick="toggleSidebar(true)">
+        <i class="fa-solid fa-bars"></i> Menu
+      </button>
+    </div>
+    <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
+
+    <!-- Left Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2><i class="fa-solid fa-chart-line"></i> WISA Portal</h2>
+      </div>
+
+      <div class="sidebar-section-label">Menu Modul Terpadu</div>
+      <ul class="sidebar-menu">
+        <li>
+          <button id="nav-KPI_WISA" class="nav-btn active" onclick="switchModule('KPI_WISA')">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>KPI WISA 2026</span>
+          </button>
+        </li>
+        <li>
+          <button id="nav-DEPLOYMENT" class="nav-btn" onclick="switchModule('DEPLOYMENT')">
+            <i class="fa-solid fa-network-wired"></i>
+            <span>Deployment Malang</span>
+          </button>
+        </li>
+        <li>
+          <button id="nav-DUE_DATE" class="nav-btn" onclick="switchModule('DUE_DATE')">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Due Date Pekerjaan</span>
+          </button>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-box">
           <div>
-            <span class="font-bold text-slate-800 block leading-tight">Monitoring Terpadu</span>
-            <span class="text-[11px] text-slate-500">District Malang • 2026</span>
+            <div id="user-display-name" class="user-name">-</div>
+            <div id="user-display-role" class="user-role">-</div>
           </div>
+          <i class="fa-solid fa-user-circle fa-lg" style="color:#60a5fa;"></i>
         </div>
-
-        <!-- Tab Switcher 3 Modul -->
-        <nav class="hidden md:flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
-          <button onclick="switchModule('KPI_WISA')" id="tab-KPI_WISA" class="nav-tab px-4 py-2 rounded-lg text-sm font-semibold transition">
-            <i class="fa-solid fa-trophy mr-1.5"></i>KPI WISA 2026
+        <div class="footer-actions">
+          <button class="btn-sm" onclick="refreshCurrentModule()" title="Refresh Data">
+            <i id="refresh-icon" class="fa-solid fa-rotate-right"></i> Refresh
           </button>
-          <button onclick="switchModule('DEPLOYMENT')" id="tab-DEPLOYMENT" class="nav-tab px-4 py-2 rounded-lg text-sm font-semibold transition">
-            <i class="fa-solid fa-network-wired mr-1.5"></i>Deployment Malang
-          </button>
-          <button onclick="switchModule('DUE_DATE')" id="tab-DUE_DATE" class="nav-tab px-4 py-2 rounded-lg text-sm font-semibold transition">
-            <i class="fa-solid fa-calendar-check mr-1.5"></i>Due Date Pekerjaan
-          </button>
-        </nav>
-
-        <!-- User Info & Actions -->
-        <div class="flex items-center gap-3">
-          <button onclick="refreshCurrentModule()" title="Refresh Data" class="p-2 text-slate-500 hover:text-red-600 hover:bg-slate-100 rounded-lg transition">
-            <i class="fa-solid fa-rotate-right" id="refresh-icon"></i>
-          </button>
-          <div class="text-right hidden sm:block">
-            <div id="user-display-name" class="text-xs font-bold text-slate-700">-</div>
-            <div id="user-display-role" class="text-[10px] text-slate-500">-</div>
-          </div>
-          <button onclick="logout()" class="text-xs bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-lg font-medium transition">
-            <i class="fa-solid fa-right-from-bracket mr-1"></i>Keluar
+          <button class="btn-sm btn-logout" onclick="logout()" title="Keluar">
+            <i class="fa-solid fa-right-from-bracket"></i> Keluar
           </button>
         </div>
       </div>
+    </aside>
 
-      <!-- Mobile Tab Switcher -->
-      <div class="flex md:hidden border-t border-slate-100 bg-slate-50 px-2 py-1.5 gap-1 overflow-x-auto">
-        <button onclick="switchModule('KPI_WISA')" id="mtab-KPI_WISA" class="mnav-tab flex-1 py-1.5 px-2 rounded text-xs font-semibold whitespace-nowrap">KPI WISA</button>
-        <button onclick="switchModule('DEPLOYMENT')" id="mtab-DEPLOYMENT" class="mnav-tab flex-1 py-1.5 px-2 rounded text-xs font-semibold whitespace-nowrap">Deployment</button>
-        <button onclick="switchModule('DUE_DATE')" id="mtab-DUE_DATE" class="mnav-tab flex-1 py-1.5 px-2 rounded text-xs font-semibold whitespace-nowrap">Due Date</button>
-      </div>
-    </header>
+    <!-- Right Main Content Area -->
+    <main class="main-content">
 
-    <!-- Main Content Area -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      
-      <!-- Loading Bar -->
-      <div id="global-loader" class="hidden mb-4 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-xl flex items-center gap-3 text-sm">
+      <!-- Global Loader -->
+      <div id="global-loader" class="loader-banner">
         <i class="fa-solid fa-circle-notch fa-spin"></i>
         <span>Mengambil data terbaru dari Google Sheets...</span>
       </div>
 
-      <!-- MODUL 1: KPI WISA 2026 -->
-      <section id="view-KPI_WISA" class="module-view hidden">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h2 class="text-lg font-bold mb-2">Dashboard KPI WISA 2026</h2>
-          <p class="text-sm text-slate-500 mb-4">Tempelkan komponen UI & fungsi kalkulasi KPI WISA yang sudah pernah dibuat ke dalam container ini.</p>
-          <div id="kpi-wisa-content" class="text-xs bg-slate-50 p-4 rounded-xl border border-dashed border-slate-300">Menunggu data...</div>
+      <!-- ==================== MODUL 1: KPI WISA 2026 (FORMAT KPI 63) ==================== -->
+      <section id="view-KPI_WISA" class="module-view active">
+        <div class="top-header">
+          <div class="header-title">
+            <h1>WISA : KPI Nov 2026 &amp; RCA Management</h1>
+            <p>Portal Monitoring Operasional Terpadu Telekomunikasi Indonesia Wilayah Malang</p>
+          </div>
+          <div class="badge-pill"><i class="fa-regular fa-calendar"></i> Periode: November 2026</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Indikator KPI</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" id="stat-total">0</div>
+                <div class="stat-sub">Item Evaluasi WISA</div>
+              </div>
+              <div class="stat-icon-box"><i class="fa-solid fa-layer-group fa-lg"></i></div>
+            </div>
+          </div>
+
+          <div class="stat-card" style="border-left: 4px solid var(--success);">
+            <div class="stat-label">Comply Nov-26</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" style="color: var(--success);" id="stat-comply">0</div>
+                <div class="stat-sub" id="stat-comply-pct">(0%) Sesuai Target</div>
+              </div>
+              <div class="stat-icon-box" style="color: var(--success);"><i class="fa-solid fa-circle-check fa-lg"></i></div>
+            </div>
+          </div>
+
+          <div class="stat-card" style="border-left: 4px solid var(--danger);">
+            <div class="stat-label">Not Comply Nov-26</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" style="color: var(--danger);" id="stat-not-comply">0</div>
+                <div class="stat-sub">Membutuhkan RCA <br><span style="color: var(--danger); font-size: 0.72rem;"><i class="fa-solid fa-triangle-exclamation"></i> Perlu Tindakan Remedi</span></div>
+              </div>
+              <div class="stat-icon-box" style="color: var(--danger);"><i class="fa-solid fa-triangle-exclamation fa-lg"></i></div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">N/A / Non Evaluasi</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" style="color: var(--text-muted);" id="stat-na">0</div>
+                <div class="stat-sub">Data Belum Tersedia / N/A</div>
+              </div>
+              <div class="stat-icon-box"><i class="fa-solid fa-circle-question fa-lg"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-input-group">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="search-input" placeholder="Cari nama KPI atau nama PIC..." onkeyup="filterKpiTable()" />
+          </div>
+          <div class="filter-dropdowns">
+            <div class="filter-item">
+              <i class="fa-solid fa-filter"></i> PIC:
+              <select id="filter-pic" onchange="filterKpiTable()">
+                <option value="ALL">Semua PIC</option>
+              </select>
+            </div>
+            <div class="filter-item">
+              Status Nov-26:
+              <select id="filter-status" onchange="filterKpiTable()">
+                <option value="ALL">Semua Status</option>
+                <option value="COMPLY">COMPLY</option>
+                <option value="NOT COMPLY">NOT COMPLY</option>
+                <option value="N/A">N/A</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th rowspan="2" style="width: 50px;">No</th>
+                  <th rowspan="2" class="text-left" style="min-width: 320px;">Indikator KPI</th>
+                  <th rowspan="2" style="width: 130px;">PIC</th>
+                  <th colspan="4" style="background: rgba(59, 130, 246, 0.1); color: #60a5fa;">OCT-26</th>
+                  <th colspan="4" style="background: rgba(16, 185, 129, 0.1); color: #34d399;">NOV-26</th>
+                  <th rowspan="2" style="width: 110px;">Aksi RCA</th>
+                </tr>
+                <tr>
+                  <th style="background: #0b1120;">Target</th>
+                  <th style="background: #0b1120;">Real</th>
+                  <th style="background: #0b1120;">ACH</th>
+                  <th style="background: #0b1120;">Compliance</th>
+                  <th style="background: #0b1120;">Target</th>
+                  <th style="background: #0b1120;">Real</th>
+                  <th style="background: #0b1120;">ACH</th>
+                  <th style="background: #0b1120;">Compliance</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <tr>
+                  <td colspan="11" style="text-align: center; padding: 30px; color: var(--text-muted);">Memuat data KPI WISA dari Google Apps Script...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
-      <!-- MODUL 2: DEPLOYMENT DISTRICT MALANG -->
-      <section id="view-DEPLOYMENT" class="module-view hidden">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h2 class="text-lg font-bold mb-2">Monitoring Deployment District Malang</h2>
-          <p class="text-sm text-slate-500 mb-4">Area untuk summary status GO LIVE / ON GOING / PLAN & SLA per STO/wilayah Malang.</p>
-          <div id="deployment-content" class="text-xs bg-slate-50 p-4 rounded-xl border border-dashed border-slate-300">Menunggu data...</div>
+      <!-- ==================== MODUL 2: DEPLOYMENT DISTRICT MALANG ==================== -->
+      <section id="view-DEPLOYMENT" class="module-view">
+        <div class="top-header">
+          <div class="header-title">
+            <h1>Monitoring Deployment District Malang</h1>
+            <p>Rekap Status Project &amp; SLA Compliance Wilayah District Malang</p>
+          </div>
+          <div class="badge-pill"><i class="fa-solid fa-location-dot"></i> District Malang</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Item Deployment</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" id="dep-total">0</div>
+                <div class="stat-sub">Total Baris Data</div>
+              </div>
+              <div class="stat-icon-box"><i class="fa-solid fa-diagram-project fa-lg"></i></div>
+            </div>
+          </div>
+          <div class="stat-card" style="border-left: 4px solid var(--success);">
+            <div class="stat-label">Go Live / Selesai</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" style="color: var(--success);" id="dep-golive">0</div>
+                <div class="stat-sub">Status Go Live</div>
+              </div>
+              <div class="stat-icon-box" style="color: var(--success);"><i class="fa-solid fa-rocket fa-lg"></i></div>
+            </div>
+          </div>
+          <div class="stat-card" style="border-left: 4px solid var(--primary);">
+            <div class="stat-label">On Going / Plan</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" style="color: #60a5fa;" id="dep-progress">0</div>
+                <div class="stat-sub">Dalam Proses / Rencana</div>
+              </div>
+              <div class="stat-icon-box" style="color: #60a5fa;"><i class="fa-solid fa-gears fa-lg"></i></div>
+            </div>
+          </div>
+          <div class="stat-card" style="border-left: 4px solid var(--danger);">
+            <div class="stat-label">Out SLA / Kendala</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" style="color: var(--danger);" id="dep-outsla">0</div>
+                <div class="stat-sub">Perlu Perhatian</div>
+              </div>
+              <div class="stat-icon-box" style="color: var(--danger);"><i class="fa-solid fa-clock fa-lg"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-input-group">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="dep-search" placeholder="Cari project, site, STO, atau status deployment..." onkeyup="renderDeploymentModule()" />
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-container">
+            <table id="dep-table">
+              <thead id="dep-thead"></thead>
+              <tbody id="dep-tbody">
+                <tr><td style="padding:25px; color:var(--text-muted);">Belum ada data deployment.</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
-      <!-- MODUL 3: DUE DATE PEKERJAAN -->
-      <section id="view-DUE_DATE" class="module-view hidden">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h2 class="text-lg font-bold mb-2">Due Date Pekerjaan</h2>
-          <p class="text-sm text-slate-500 mb-4">Tempelkan komponen tracker Due Date yang sudah pernah dibuat ke dalam container ini.</p>
-          <div id="duedate-content" class="text-xs bg-slate-50 p-4 rounded-xl border border-dashed border-slate-300">Menunggu data...</div>
+      <!-- ==================== MODUL 3: DUE DATE PEKERJAAN ==================== -->
+      <section id="view-DUE_DATE" class="module-view">
+        <div class="top-header">
+          <div class="header-title">
+            <h1>Due Date Pekerjaan</h1>
+            <p>Pemantauan Tenggat Waktu, Prioritas &amp; Status Penyelesaian Pekerjaan</p>
+          </div>
+          <div class="badge-pill"><i class="fa-regular fa-clock"></i> Deadline Tracker</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Pekerjaan</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" id="due-total">0</div>
+                <div class="stat-sub">Item Terdaftar</div>
+              </div>
+              <div class="stat-icon-box"><i class="fa-solid fa-list-check fa-lg"></i></div>
+            </div>
+          </div>
+          <div class="stat-card" style="border-left: 4px solid var(--danger);">
+            <div class="stat-label">Overdue / Lewat Tenggat</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" style="color: var(--danger);" id="due-overdue">0</div>
+                <div class="stat-sub">Segera Tindak Lanjuti</div>
+              </div>
+              <div class="stat-icon-box" style="color: var(--danger);"><i class="fa-solid fa-circle-exclamation fa-lg"></i></div>
+            </div>
+          </div>
+          <div class="stat-card" style="border-left: 4px solid var(--warning);">
+            <div class="stat-label">Mendekati Due Date</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" style="color: var(--warning);" id="due-upcoming">0</div>
+                <div class="stat-sub">Dalam 3 Hari Ke Depan</div>
+              </div>
+              <div class="stat-icon-box" style="color: var(--warning);"><i class="fa-solid fa-hourglass-half fa-lg"></i></div>
+            </div>
+          </div>
+          <div class="stat-card" style="border-left: 4px solid var(--success);">
+            <div class="stat-label">Selesai / Done</div>
+            <div class="stat-main">
+              <div>
+                <div class="stat-number" style="color: var(--success);" id="due-done">0</div>
+                <div class="stat-sub">Terselesaikan</div>
+              </div>
+              <div class="stat-icon-box" style="color: var(--success);"><i class="fa-solid fa-check-double fa-lg"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-input-group">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="due-search" placeholder="Cari nama pekerjaan, PIC, atau status..." onkeyup="renderDueDateModule()" />
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-container">
+            <table id="due-table">
+              <thead id="due-thead"></thead>
+              <tbody id="due-tbody">
+                <tr><td style="padding:25px; color:var(--text-muted);">Belum ada data due date pekerjaan.</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
     </main>
   </div>
 
-  <!-- ==================== 3. CORE SCRIPT ==================== -->
+  <!-- Modal Detail RCA -->
+  <div id="rca-modal" class="modal-backdrop" onclick="if(event.target===this) closeRcaModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-lines" style="color:#60a5fa; margin-right:6px;"></i> Detail RCA &amp; Remedi</h3>
+        <button class="modal-close" onclick="closeRcaModal()">&times;</button>
+      </div>
+      <div id="rca-modal-content" class="modal-body"></div>
+    </div>
+  </div>
+
   <script>
-    // GANTI DENGAN WEB APP URL DARI GOOGLE APPS SCRIPT ANDA
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbynrS0mbvlxevsQOQ1mr-u6ehKqk3ySaAXTKDH0jIGGvLtejHcHbs4IeFgMyxLWusBteA/exec";
+    // GANTI URL INI DENGAN WEB APP URL GOOGLE APPS SCRIPT ANDA
+    const API_URL = "https://script.google.com/macros/s/AKfycbwcDbmnd95d8ych4XJWFw15mLcrur6RWtThpDR4p0ACvIg9HnwYYC0zILryt2x-xjnwUQ/exec";
 
     let currentModule = "KPI_WISA";
-    const dataCache = {}; // Menyimpan cache data agar pindah tab instan
+    let globalKpiData = [];
+    const rawModuleCache = {};
 
-    // Cek sesi saat halaman dibuka
     window.addEventListener("DOMContentLoaded", () => {
       const savedUser = sessionStorage.getItem("portal_user");
       if (savedUser) {
@@ -146,20 +633,25 @@
       }
     });
 
-    // Handler Login
+    function toggleSidebar(open) {
+      document.getElementById("sidebar").classList.toggle("open", open);
+      document.getElementById("sidebar-backdrop").classList.toggle("open", open);
+    }
+
+    // ==================== AUTH ====================
     document.getElementById("login-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("btn-login");
       const errBox = document.getElementById("login-error");
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
 
       btn.disabled = true;
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...`;
-      errBox.classList.add("hidden");
+      errBox.style.display = "none";
 
       try {
-        const res = await fetch(GAS_URL, {
+        const res = await fetch(API_URL, {
           method: "POST",
           body: JSON.stringify({ action: "login", username, password })
         });
@@ -169,12 +661,13 @@
           sessionStorage.setItem("portal_user", JSON.stringify(result.user));
           initApp(result.user);
         } else {
-          errBox.textContent = result.message || "Login gagal.";
-          errBox.classList.remove("hidden");
+          errBox.textContent = result.message || "Username atau password salah.";
+          errBox.style.display = "block";
         }
       } catch (err) {
-        errBox.textContent = "Gagal terhubung ke server. Pastikan URL Apps Script benar.";
-        errBox.classList.remove("hidden");
+        console.error(err);
+        errBox.textContent = "Gagal terhubung ke server Apps Script. Pastikan deployment aktif (Anyone).";
+        errBox.style.display = "block";
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<span>Masuk ke Portal</span> <i class="fa-solid fa-arrow-right"></i>`;
@@ -182,10 +675,10 @@
     });
 
     function initApp(user) {
-      document.getElementById("login-screen").classList.add("hidden");
-      document.getElementById("app-shell").classList.remove("hidden");
-      document.getElementById("user-display-name").textContent = user.nama;
-      document.getElementById("user-display-role").textContent = user.role;
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("app-shell").classList.add("active");
+      document.getElementById("user-display-name").textContent = user.nama || user.username || "User";
+      document.getElementById("user-display-role").textContent = user.role || "Member";
       switchModule("KPI_WISA");
     }
 
@@ -194,30 +687,22 @@
       location.reload();
     }
 
+    // ==================== NAVIGATION & DATA ====================
     async function switchModule(modName, forceRefresh = false) {
       currentModule = modName;
+      toggleSidebar(false);
 
-      // Update tampilan tab aktif
-      document.querySelectorAll(".nav-tab, .mnav-tab").forEach(el => {
-        el.classList.remove("bg-white", "text-red-600", "shadow-sm");
-        el.classList.add("text-slate-600");
-      });
-      [document.getElementById(`tab-${modName}`), document.getElementById(`mtab-${modName}`)].forEach(el => {
-        if (el) {
-          el.classList.add("bg-white", "text-red-600", "shadow-sm");
-          el.classList.remove("text-slate-600");
-        }
-      });
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+      const activeNav = document.getElementById(`nav-${modName}`);
+      if (activeNav) activeNav.classList.add("active");
 
-      // Tampilkan section modul yang dipilih
-      document.querySelectorAll(".module-view").forEach(sec => sec.classList.add("hidden"));
-      document.getElementById(`view-${modName}`).classList.remove("hidden");
+      document.querySelectorAll(".module-view").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(`view-${modName}`).classList.add("active");
 
-      // Ambil data jika belum ada di cache atau sedang di-refresh
-      if (!dataCache[modName] || forceRefresh) {
+      if (!rawModuleCache[modName] || forceRefresh) {
         await loadModuleData(modName);
       } else {
-        renderModule(modName, dataCache[modName]);
+        routeRender(modName, rawModuleCache[modName]);
       }
     }
 
@@ -227,45 +712,255 @@
 
     async function loadModuleData(modName) {
       const loader = document.getElementById("global-loader");
-      loader.classList.remove("hidden");
+      loader.classList.add("active");
 
       try {
-        const res = await fetch(GAS_URL, {
+        const res = await fetch(API_URL, {
           method: "POST",
           body: JSON.stringify({ action: "getData", module: modName })
         });
-        const result = await res.json();
-
-        if (result.status === "success") {
-          dataCache[modName] = result;
-          renderModule(modName, result);
-        } else {
-          alert("Error: " + result.message);
-        }
+        const payload = await res.json();
+        rawModuleCache[modName] = payload;
+        routeRender(modName, payload);
       } catch (err) {
         console.error(err);
+        if (modName === "KPI_WISA") {
+          document.getElementById("table-body").innerHTML = `<tr><td colspan="11" style="color:var(--danger); text-align:center; padding: 20px;">Gagal memuat data. Pastikan Apps Script sudah di-deploy dengan versi terbaru ("New version").</td></tr>`;
+        }
       } finally {
-        loader.classList.add("hidden");
+        loader.classList.remove("active");
       }
     }
 
-    // Router fungsi render masing-masing modul
-    function renderModule(modName, data) {
+    function routeRender(modName, payload) {
       if (modName === "KPI_WISA") {
-        // Panggil fungsi render KPI WISA Anda di sini
-        document.getElementById("kpi-wisa-content").innerHTML = 
-          `<strong>Data KPI WISA berhasil dimuat:</strong> ${data.rows.length} baris ditemukan. Kolom: ${data.headers.join(", ")}`;
-      } 
-      else if (modName === "DEPLOYMENT") {
-        // Panggil fungsi render Deployment Malang Anda di sini
-        document.getElementById("deployment-content").innerHTML = 
-          `<strong>Data Deployment Malang berhasil dimuat:</strong> ${data.rows.length} baris ditemukan. Kolom: ${data.headers.join(", ")}`;
-      } 
-      else if (modName === "DUE_DATE") {
-        // Panggil fungsi render Due Date Anda di sini
-        document.getElementById("duedate-content").innerHTML = 
-          `<strong>Data Due Date berhasil dimuat:</strong> ${data.rows.length} baris ditemukan. Kolom: ${data.headers.join(", ")}`;
+        globalKpiData = normalizeKpiPayload(payload);
+        populatePicDropdown(globalKpiData);
+        renderKpiDashboard(globalKpiData);
+      } else if (modName === "DEPLOYMENT") {
+        renderDeploymentModule(payload);
+      } else if (modName === "DUE_DATE") {
+        renderDueDateModule(payload);
       }
+    }
+
+    // ==================== MODUL 1: KPI WISA 2026 ====================
+    function normalizeKpiPayload(payload) {
+      if (Array.isArray(payload)) return payload;
+      if (payload && Array.isArray(payload.data)) return payload.data;
+      if (payload && Array.isArray(payload.rows)) {
+        return payload.rows.map((r, idx) => ({
+          no: r[0] || (idx + 1),
+          kpi: r[1] || "-",
+          pic: r[2] || "ENTERPRISE",
+          targetOct: r[3] || "-",
+          reaOct: r[4] || "-",
+          achOct: r[5] || "-",
+          compOct: r[6] || "-",
+          targetNov: r[7] || "-",
+          reaNov: r[8] || "-",
+          achNov: r[9] || "-",
+          compNov: r[10] || "-",
+          rca: r[11] || ""
+        }));
+      }
+      return [];
+    }
+
+    function populatePicDropdown(data) {
+      const picSet = new Set();
+      data.forEach(item => {
+        if (item.pic && item.pic !== "-") picSet.add(item.pic);
+      });
+      const select = document.getElementById("filter-pic");
+      const currentVal = select.value;
+      select.innerHTML = `<option value="ALL">Semua PIC</option>`;
+      picSet.forEach(pic => {
+        const opt = document.createElement("option");
+        opt.value = pic;
+        opt.textContent = pic;
+        select.appendChild(opt);
+      });
+      if ([...select.options].some(o => o.value === currentVal)) {
+        select.value = currentVal;
+      }
+    }
+
+    function renderKpiDashboard(data) {
+      const total = data.length;
+      let complyCount = 0;
+      let notComplyCount = 0;
+      let naCount = 0;
+
+      data.forEach(item => {
+        const compNov = String(item.compNov || "").toUpperCase();
+        if (compNov.includes("NOT")) notComplyCount++;
+        else if (compNov.includes("COMPLY")) complyCount++;
+        else naCount++;
+      });
+
+      document.getElementById("stat-total").innerText = total;
+      document.getElementById("stat-comply").innerText = complyCount;
+      const complyPct = total > 0 ? ((complyCount / total) * 100).toFixed(1) : 0;
+      document.getElementById("stat-comply-pct").innerText = `(${complyPct}%) Sesuai Target`;
+      document.getElementById("stat-not-comply").innerText = notComplyCount;
+      document.getElementById("stat-na").innerText = naCount;
+
+      renderKpiTable(data);
+    }
+
+    function renderKpiTable(data) {
+      const tbody = document.getElementById("table-body");
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding: 25px; color: var(--text-muted);">Tidak ada data KPI yang cocok dengan filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = data.map((item, idx) => {
+        const no = item.no || (idx + 1);
+        const kpi = item.kpi || "-";
+        const pic = item.pic || "ENTERPRISE";
+
+        const tOct = item.targetOct || "-";
+        const rOct = item.reaOct || "-";
+        const aOct = item.achOct || "-";
+        const cOct = item.compOct || "-";
+
+        const tNov = item.targetNov || "-";
+        const rNov = item.reaNov || "-";
+        const aNov = item.achNov || "-";
+        const cNov = item.compNov || "-";
+
+        const isNotComply = String(cNov).toUpperCase().includes("NOT");
+        const rcaButton = isNotComply
+          ? `<button class="btn-rca" onclick='openRcaModal(${idx})'><i class="fa-solid fa-file-lines"></i> Detail RCA</button>`
+          : `<span style="color: var(--text-muted);">-</span>`;
+
+        return `
+          <tr>
+            <td>${no}</td>
+            <td class="text-left" style="font-weight: 500; color: #fff;">${kpi}</td>
+            <td><span class="pic-badge">${pic}</span></td>
+            <td>${tOct}</td>
+            <td>${rOct}</td>
+            <td>${aOct}</td>
+            <td>${getStatusBadge(cOct)}</td>
+            <td>${tNov}</td>
+            <td>${rNov}</td>
+            <td>${aNov}</td>
+            <td>${getStatusBadge(cNov)}</td>
+            <td>${rcaButton}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function getStatusBadge(val) {
+      if (!val || val === "N/A" || val === "-") return `<span class="status-na">N/A</span>`;
+      const str = String(val).toUpperCase();
+      if (str.includes("NOT")) return `<span class="status-not-comply"><i class="fa-solid fa-triangle-exclamation"></i> NOT COMPLY</span>`;
+      if (str.includes("COMPLY")) return `<span class="status-comply">COMPLY</span>`;
+      return `<span class="status-na">${val}</span>`;
+    }
+
+    function filterKpiTable() {
+      const query = document.getElementById("search-input").value.toLowerCase();
+      const selectedPic = document.getElementById("filter-pic").value;
+      const selectedStatus = document.getElementById("filter-status").value;
+
+      const filtered = globalKpiData.filter(item => {
+        const name = (item.kpi || "").toLowerCase();
+        const pic = (item.pic || "").toLowerCase();
+        const status = String(item.compNov || "").toUpperCase();
+
+        const matchQuery = name.includes(query) || pic.includes(query);
+        const matchPic = (selectedPic === "ALL") || (item.pic === selectedPic);
+
+        let matchStatus = true;
+        if (selectedStatus === "COMPLY") matchStatus = status.includes("COMPLY") && !status.includes("NOT");
+        else if (selectedStatus === "NOT COMPLY") matchStatus = status.includes("NOT");
+        else if (selectedStatus === "N/A") matchStatus = !status.includes("COMPLY") && !status.includes("NOT");
+
+        return matchQuery && matchPic && matchStatus;
+      });
+
+      renderKpiTable(filtered);
+    }
+
+    function openRcaModal(idx) {
+      const item = globalKpiData[idx];
+      if (!item) return;
+      document.getElementById("rca-modal-content").innerHTML = `
+        <p><strong>Indikator KPI:</strong> ${item.kpi || "-"}</p>
+        <div class="modal-meta">
+          <div><strong>PIC:</strong> ${item.pic || "-"}</div>
+          <div><strong>Target Nov-26:</strong> ${item.targetNov || "-"} | <strong>Real:</strong> ${item.reaNov || "-"} | <strong>ACH:</strong> ${item.achNov || "-"}</div>
+          <div><strong>Status:</strong> ${item.compNov || "NOT COMPLY"}</div>
+        </div>
+        <div><strong>Catatan RCA / Remedi:</strong></div>
+        <p style="margin-top:6px; color:#f8fafc;">${item.rca || "Belum ada catatan RCA di sheet. Lengkapi analisis akar masalah dan rencana tindakan perbaikan."}</p>
+      `;
+      document.getElementById("rca-modal").classList.add("active");
+    }
+
+    function closeRcaModal() {
+      document.getElementById("rca-modal").classList.remove("active");
+    }
+
+    // ==================== MODUL 2 & 3 (DINAMIS DARI SHEET) ====================
+    function renderDeploymentModule(payload = rawModuleCache["DEPLOYMENT"]) {
+      if (!payload || !payload.rows) return;
+      const q = (document.getElementById("dep-search")?.value || "").toLowerCase();
+      let goLive = 0, progress = 0, outSla = 0;
+
+      payload.rows.forEach(row => {
+        const joined = row.join(" ").toUpperCase();
+        if (joined.includes("GO LIVE") || joined.includes("DONE") || joined.includes("SELESAI")) goLive++;
+        else if (joined.includes("OUT SLA") || joined.includes("OVERDUE") || joined.includes("NOT")) outSla++;
+        else progress++;
+      });
+
+      document.getElementById("dep-total").innerText = payload.rows.length;
+      document.getElementById("dep-golive").innerText = goLive;
+      document.getElementById("dep-progress").innerText = progress;
+      document.getElementById("dep-outsla").innerText = outSla;
+
+      const filtered = payload.rows.filter(r => r.join(" ").toLowerCase().includes(q));
+      renderGenericTable("dep-thead", "dep-tbody", payload.headers || [], filtered);
+    }
+
+    function renderDueDateModule(payload = rawModuleCache["DUE_DATE"]) {
+      if (!payload || !payload.rows) return;
+      const q = (document.getElementById("due-search")?.value || "").toLowerCase();
+      let overdue = 0, upcoming = 0, done = 0;
+
+      payload.rows.forEach(row => {
+        const joined = row.join(" ").toUpperCase();
+        if (joined.includes("DONE") || joined.includes("SELESAI") || joined.includes("CLOSE")) done++;
+        else if (joined.includes("OVERDUE") || joined.includes("LEWAT") || joined.includes("TELAT")) overdue++;
+        else upcoming++;
+      });
+
+      document.getElementById("due-total").innerText = payload.rows.length;
+      document.getElementById("due-overdue").innerText = overdue;
+      document.getElementById("due-upcoming").innerText = upcoming;
+      document.getElementById("due-done").innerText = done;
+
+      const filtered = payload.rows.filter(r => r.join(" ").toLowerCase().includes(q));
+      renderGenericTable("due-thead", "due-tbody", payload.headers || [], filtered);
+    }
+
+    function renderGenericTable(theadId, tbodyId, headers, rows) {
+      const thead = document.getElementById(theadId);
+      const tbody = document.getElementById(tbodyId);
+      thead.innerHTML = `<tr>${headers.map(h => `<th>${h || "-"}</th>`).join("")}</tr>`;
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="${Math.max(headers.length, 1)}" style="padding:24px; color:var(--text-muted);">Tidak ada data yang cocok.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = rows.map(r =>
+        `<tr>${r.map(cell => `<td class="text-left">${cell || "-"}</td>`).join("")}</tr>`
+      ).join("");
     }
   </script>
 </body>
