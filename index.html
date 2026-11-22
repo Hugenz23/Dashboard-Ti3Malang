@@ -751,16 +751,16 @@
       if (payload && Array.isArray(payload.rows)) {
         return payload.rows.map((r, idx) => ({
           no: r[0] || (idx + 1),
-          kpi: r[1] || "-",
-          pic: r[2] || "ENTERPRISE",
-          targetOct: r[3] || "-",
-          reaOct: r[4] || "-",
-          achOct: r[5] || "-",
-          compOct: r[6] || "-",
-          targetNov: r[7] || "-",
-          reaNov: r[8] || "-",
-          achNov: r[9] || "-",
-          compNov: r[10] || "-",
+          kpi: r[4] || "-",
+          pic: r[18] || "ENTERPRISE",
+          targetOct: r[10] || "-",
+          reaOct: r[11] || "-",
+          achOct: r[12] || "-",
+          compOct: r[13] || "-",
+          targetNov: r[14] || "-",
+          reaNov: r[15] || "-",
+          achNov: r[16] || "-",
+          compNov: r[17] || "-",
           rca: r[11] || ""
         }));
       }
